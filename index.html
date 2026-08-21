@@ -820,25 +820,24 @@
   function renderPDFSlides(project, onDone) {
     if (project.loaded) { onDone(); return; }
     loadPDFJS(() => {
-      pdfjsLib.getDocument(project.pdfUrl).promise.then(pdf => {
+      pdfjsLib.getDocument(project.pdfUrl).promise.then(async pdf => {
         project.total = pdf.numPages;
-        const renders = [];
+        const slides = [];
+        // Render pages one at a time (sequential) — rendering all pages
+        // concurrently can corrupt text/font rendering in PDF.js.
         for (let i = 1; i <= pdf.numPages; i++) {
-          renders.push(pdf.getPage(i).then(page => {
-            const vp = page.getViewport({ scale: 1.8 });
-            const canvas = document.createElement('canvas');
-            canvas.width = vp.width; canvas.height = vp.height;
-            return page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise
-              .then(() => ({ index: i - 1, dataUrl: canvas.toDataURL('image/jpeg', 0.88) }));
-          }));
+          const page = await pdf.getPage(i);
+          const vp = page.getViewport({ scale: 1.8 });
+          const canvas = document.createElement('canvas');
+          canvas.width = vp.width; canvas.height = vp.height;
+          await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
+          slides.push(canvas.toDataURL('image/jpeg', 0.88));
+          canvas.width = 0; canvas.height = 0; // free memory
         }
-        Promise.all(renders).then(results => {
-          results.sort((a, b) => a.index - b.index);
-          project.slides = results.map(r => r.dataUrl);
-          project.loaded = true;
-          document.getElementById(project.thumbId).src = project.slides[0];
-          onDone();
-        });
+        project.slides = slides;
+        project.loaded = true;
+        document.getElementById(project.thumbId).src = project.slides[0];
+        onDone();
       });
     });
   }
@@ -898,10 +897,12 @@
     if (e.key === 'Escape') closeLightbox();
   });
 
-  // Auto-load thumbnail on page load
+  // Load thumbnails on page load — staggered, not simultaneous,
+  // to avoid two PDFs competing for the PDF.js worker at once.
   window.addEventListener('load', () => {
-    renderPDFSlides(projects.audi, () => {});
-    renderPDFSlides(projects.gl3, () => {});
+    renderPDFSlides(projects.audi, () => {
+      renderPDFSlides(projects.gl3, () => {});
+    });
   });
 </script>
 
@@ -998,7 +999,6 @@
   }, { threshold: 0.12 });
   reveals.forEach(r => observer.observe(r));
 </script>
-  
 
 </body>
 </html>
