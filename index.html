@@ -621,6 +621,46 @@
     border: none; cursor: pointer;
   }
 
+  /* Interactive tool card (e.g. live SQL explorer) */
+  .project-card-tool {
+    display: flex; flex-direction: column;
+  }
+  .tool-preview {
+    background: #0a0a08;
+    border: 1px solid var(--rule);
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 1.4rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    line-height: 1.7;
+    color: #7DDA9A;
+  }
+  .tool-preview .tp-line { display: block; }
+  .tool-preview .tp-dim { color: #555548; }
+  .tool-preview .tp-accent { color: #9B8FFF; }
+  .project-links {
+    display: flex; gap: 0.6rem; margin-top: 1.4rem;
+  }
+  .project-link-btn {
+    flex: 1;
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.65rem 1rem;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+  }
+  .project-link-btn.primary {
+    background: var(--ink); color: var(--bg);
+  }
+  .project-link-btn.primary:hover { background: var(--accent); }
+  .project-link-btn.ghost {
+    border: 1px solid var(--rule); color: var(--mid);
+  }
+  .project-link-btn.ghost:hover { border-color: var(--accent); color: var(--accent); }
+
   /* Placeholder card */
   .project-card-placeholder {
     border: 1px dashed var(--rule);
@@ -763,6 +803,30 @@
       </div>
     </div>
 
+    <!-- REAL PROJECT: E-Commerce ETL + Live SQL Explorer -->
+    <div class="project-card project-card-tool">
+      <div class="tool-preview">
+        <span class="tp-line"><span class="tp-dim">--</span> Revenue by state</span>
+        <span class="tp-line"><span class="tp-accent">SELECT</span> c.state, SUM(oi.price)</span>
+        <span class="tp-line"><span class="tp-accent">FROM</span> orders o <span class="tp-accent">JOIN</span> customers c ...</span>
+        <span class="tp-line"><span class="tp-dim">→ running live in your browser · WASM SQLite</span></span>
+      </div>
+      <div class="project-type"><span class="dot"></span>SQL + Data Engineering</div>
+      <div class="project-title">E-Commerce ETL Pipeline &amp; Live SQL Explorer</div>
+      <p class="project-desc">A full ETL pipeline (extract → clean → load) turning messy raw e-commerce data into a normalized SQLite database. Includes a live, in-browser SQL explorer — real queries run against the real database, no backend, no precomputed results.</p>
+      <div class="project-tools">
+        <span class="tool-chip">Python</span>
+        <span class="tool-chip">SQL</span>
+        <span class="tool-chip">SQLite</span>
+        <span class="tool-chip">ETL</span>
+        <span class="tool-chip">Data Engineering</span>
+      </div>
+      <div class="project-links">
+        <a class="project-link-btn primary" href="https://ecommerce-sql-explorer.vercel.app/" target="_blank" rel="noopener">Live Demo ↗</a>
+        <a class="project-link-btn ghost" href="https://github.com/michelmagdy60/ecommerce-sql-explorer" target="_blank" rel="noopener">View Code ↗</a>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -820,24 +884,25 @@
   function renderPDFSlides(project, onDone) {
     if (project.loaded) { onDone(); return; }
     loadPDFJS(() => {
-      pdfjsLib.getDocument(project.pdfUrl).promise.then(async pdf => {
+      pdfjsLib.getDocument(project.pdfUrl).promise.then(pdf => {
         project.total = pdf.numPages;
-        const slides = [];
-        // Render pages one at a time (sequential) — rendering all pages
-        // concurrently can corrupt text/font rendering in PDF.js.
+        const renders = [];
         for (let i = 1; i <= pdf.numPages; i++) {
-          const page = await pdf.getPage(i);
-          const vp = page.getViewport({ scale: 1.8 });
-          const canvas = document.createElement('canvas');
-          canvas.width = vp.width; canvas.height = vp.height;
-          await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
-          slides.push(canvas.toDataURL('image/jpeg', 0.88));
-          canvas.width = 0; canvas.height = 0; // free memory
+          renders.push(pdf.getPage(i).then(page => {
+            const vp = page.getViewport({ scale: 1.8 });
+            const canvas = document.createElement('canvas');
+            canvas.width = vp.width; canvas.height = vp.height;
+            return page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise
+              .then(() => ({ index: i - 1, dataUrl: canvas.toDataURL('image/jpeg', 0.88) }));
+          }));
         }
-        project.slides = slides;
-        project.loaded = true;
-        document.getElementById(project.thumbId).src = project.slides[0];
-        onDone();
+        Promise.all(renders).then(results => {
+          results.sort((a, b) => a.index - b.index);
+          project.slides = results.map(r => r.dataUrl);
+          project.loaded = true;
+          document.getElementById(project.thumbId).src = project.slides[0];
+          onDone();
+        });
       });
     });
   }
@@ -897,12 +962,10 @@
     if (e.key === 'Escape') closeLightbox();
   });
 
-  // Load thumbnails on page load — staggered, not simultaneous,
-  // to avoid two PDFs competing for the PDF.js worker at once.
+  // Auto-load thumbnail on page load
   window.addEventListener('load', () => {
-    renderPDFSlides(projects.audi, () => {
-      renderPDFSlides(projects.gl3, () => {});
-    });
+    renderPDFSlides(projects.audi, () => {});
+    renderPDFSlides(projects.gl3, () => {});
   });
 </script>
 
