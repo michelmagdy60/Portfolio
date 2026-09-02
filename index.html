@@ -243,11 +243,13 @@
     transition: border-color 0.2s, transform 0.2s;
   }
   .pipeline-step:hover { border-color: var(--accent); transform: translateX(3px); }
-  .pipeline-step:nth-child(2) { animation-delay: 0.3s; margin-top: 0.9rem; }
-  .pipeline-step:nth-child(4) { animation-delay: 0.45s; margin-top: 0.9rem; }
-  .pipeline-step:nth-child(6) { animation-delay: 0.6s; margin-top: 0.9rem; }
-  .pipeline-step:nth-child(8) { animation-delay: 0.75s; margin-top: 0.9rem; }
-  .pipeline-step:nth-child(10) { animation-delay: 0.9s; margin-top: 0.9rem; }
+  /* .pipeline-rail is the 1st child, so steps start at nth-child(2) — indexed accordingly */
+  .pipeline-step:nth-child(2) { animation-delay: 0s; }
+  .pipeline-step:nth-child(3) { animation-delay: 0.15s; }
+  .pipeline-step:nth-child(4) { animation-delay: 0.3s; }
+  .pipeline-step:nth-child(5) { animation-delay: 0.45s; }
+  .pipeline-step:nth-child(6) { animation-delay: 0.6s; }
+  .pipeline-step + .pipeline-step { margin-top: 0.9rem; }
 
   .step-icon {
     width: 36px; height: 36px;
@@ -741,6 +743,18 @@
     transition: color 0.2s;
   }
   .contact-email:hover { color: var(--accent); }
+  .contact-phone {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+    color: var(--mid);
+    text-decoration: none;
+    margin-top: 1rem;
+    transition: color 0.2s;
+  }
+  .contact-phone svg { flex-shrink: 0; }
+  .contact-phone:hover { color: var(--accent); }
   .social-links { display: flex; justify-content: center; gap: 1.5rem; margin-top: 2.5rem; }
   .social-link {
     font-family: 'DM Mono', monospace;
@@ -1149,6 +1163,12 @@
     <h2>Let's build something <em>meaningful</em>.</h2>
     <p>Open to freelance projects, agency partnerships, and part-time work — plus full-time roles. Whether you need a one-time deck or a system built to last, let's talk.</p>
     <a class="contact-email" href="mailto:michel.magdy60@gmail.com">michel.magdy60@gmail.com</a>
+    <div>
+      <a class="contact-phone" href="tel:+201066852198">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1v3.4c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4.1c0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.3 1.1L6.6 10.8Z"/></svg>
+        +20 106 685 2198
+      </a>
+    </div>
     <div class="social-links">
       <a class="social-link" href="https://www.linkedin.com/in/michel-magdy-00770b191" target="_blank" rel="noopener">⬡ LinkedIn</a>
     </div>
