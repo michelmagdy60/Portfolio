@@ -1029,60 +1029,6 @@
   </div>
   <div class="projects-grid reveal">
 
-    <!-- REAL PROJECT: Audi KSA -->
-    <div class="project-card project-card-slides" role="button" tabindex="0" aria-label="View Audi KSA Digital Presence Performance Analysis, 18 slides"
-         onclick="openLightbox('audi')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox('audi')}">
-      <div class="slide-thumb" id="audi-thumb-wrap">
-        <img id="audi-thumb" src="" alt="" />
-        <div class="thumb-error-msg">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>
-          <div class="err-title">Preview unavailable</div>
-          <div class="err-sub">Click to view slides</div>
-        </div>
-        <div class="slide-thumb-overlay">
-          <span class="slide-count-badge">18 slides</span>
-          <span class="view-slides-btn">View Slides ↗</span>
-        </div>
-      </div>
-      <div class="card-mode-badge">One-time Deck</div>
-      <div class="project-type"><span class="dot"></span>Social Listening &amp; Insights</div>
-      <div class="project-title">Audi KSA — Digital Presence Performance Analysis</div>
-      <p class="project-desc">Q1 2024 analysis of Audi KSA's social media across Instagram, Twitter/X, Facebook, LinkedIn &amp; YouTube. Measured engagement, sentiment, and content performance using Python and data processing methodology.</p>
-      <div class="project-tools">
-        <span class="tool-chip">Social Media</span>
-        <span class="tool-chip">Python</span>
-        <span class="tool-chip">Sentiment Analysis</span>
-        <span class="tool-chip">Engagement Metrics</span>
-      </div>
-    </div>
-
-    <!-- REAL PROJECT: GL3 Metro Line -->
-    <div class="project-card project-card-slides" role="button" tabindex="0" aria-label="View GL3 Metro Line Consumer Insights Survey, 22 slides"
-         onclick="openLightbox('gl3')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox('gl3')}">
-      <div class="slide-thumb" id="gl3-thumb-wrap">
-        <img id="gl3-thumb" src="" alt="" />
-        <div class="thumb-error-msg">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>
-          <div class="err-title">Preview unavailable</div>
-          <div class="err-sub">Click to view slides</div>
-        </div>
-        <div class="slide-thumb-overlay">
-          <span class="slide-count-badge">22 slides</span>
-          <span class="view-slides-btn">View Slides ↗</span>
-        </div>
-      </div>
-      <div class="card-mode-badge">One-time Deck</div>
-      <div class="project-type"><span class="dot"></span>Marketing &amp; Consumer Insights</div>
-      <div class="project-title">GL3 Metro Line — Consumer Insights Survey</div>
-      <p class="project-desc">Quantitative survey of 1,043 respondents exploring transportation behavior, GL3 rider experience, need gaps, and advertising channel effectiveness, translated into a full insights &amp; recommendations deck.</p>
-      <div class="project-tools">
-        <span class="tool-chip">Market Research</span>
-        <span class="tool-chip">Survey Analysis</span>
-        <span class="tool-chip">Data Visualization</span>
-        <span class="tool-chip">Consumer Insights</span>
-      </div>
-    </div>
-
     <!-- REAL PROJECT: Velmora Digital Presence Analysis -->
     <div class="project-card project-card-slides" role="button" tabindex="0" aria-label="View Velmora Digital Presence Performance Analysis, 18 slides"
          onclick="openLightbox('velmora')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox('velmora')}">
@@ -1259,18 +1205,6 @@
   const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/michelmagdy60/portfolio/main/assets';
 
   const projects = {
-    audi: {
-      title: 'Audi KSA — Digital Presence Performance Analysis Q1 2024',
-      pdfUrl: 'assets/Digital_Presence_Performance_Analysis_-_Michel_Magdy.pdf',
-      thumbId: 'audi-thumb',
-      slides: [], total: 0, loaded: false
-    },
-    gl3: {
-      title: 'GL3 Metro Line — Consumer Insights Survey',
-      pdfUrl: 'assets/GL3_Metro_Line_Insights_-_Michel_Magdy.pdf',
-      thumbId: 'gl3-thumb',
-      slides: [], total: 0, loaded: false
-    },
     velmora: {
       title: 'Velmora — Digital Presence Performance Analysis Q1 2024',
       pdfUrl: `${GITHUB_RAW_BASE}/Velmora_Digital_Presence_Analysis_-_Michel_Magdy.pdf`,
@@ -1390,8 +1324,6 @@
   });
 
   window.addEventListener('load', () => {
-    renderPDFSlides(projects.audi, () => {});
-    renderPDFSlides(projects.gl3, () => {});
     renderPDFSlides(projects.velmora, () => {});
     renderPDFSlides(projects.nyc, () => {});
   });
