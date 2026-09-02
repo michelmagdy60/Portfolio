@@ -3,17 +3,42 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Portfolio — Data & ETL Analyst</title>
+<title>Michel Magdy — Marketing Analytics & Data Insights</title>
+<meta name="description" content="Michel Magdy — social listening, marketing analytics, and end-to-end data pipelines. One-time decks or systems built to last, using Python, SQL, and Power BI." />
+<meta property="og:title" content="Michel Magdy — Marketing Analytics & Data Insights" />
+<meta property="og:description" content="Social listening, campaign analysis, and end-to-end data pipelines — one-time decks or systems built to last, including a live in-browser SQL explorer." />
+<meta property="og:type" content="website" />
+<meta name="theme-color" content="#F7F5F0" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23111108'/%3E%3Ccircle cx='7' cy='20' r='2.6' fill='%235B3EE8'/%3E%3Ccircle cx='16' cy='11' r='2.6' fill='%239B6FE8'/%3E%3Ccircle cx='25' cy='20' r='2.6' fill='%235B3EE8'/%3E%3Cpath d='M9.2 18.8 13.8 12.6M18.2 12.6 22.8 18.8' stroke='%23F7F5F0' stroke-width='1.3' fill='none'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Newsreader:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" />
 <style>
   :root {
     --bg: #F7F5F0;
     --ink: #111108;
-    --mid: #6B6B60;
+    --mid: #5F5F54;
     --accent: #5B3EE8;
     --accent2: #9B6FE8;
+    --accent-soft: rgba(91,62,232,0.08);
     --rule: #D8D4CC;
     --card-bg: #FFFFFF;
+
+    --ink-bg: #111108;
+    --ink-card: #1A1A14;
+    --ink-line: #2A2A22;
+    --ink-line-soft: #232319;
+    --ink-fg: #F5F3EC;
+    --ink-fg-mid: #90897A;
+
+    --space-1: 0.5rem;
+    --space-2: 1rem;
+    --space-3: 1.5rem;
+    --space-4: 2.5rem;
+    --space-5: 4rem;
+    --space-6: 7rem;
+
+    --ease: cubic-bezier(.22,.61,.36,1);
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -27,25 +52,53 @@
     font-size: 17px;
     line-height: 1.7;
     overflow-x: hidden;
+    background-image:
+      radial-gradient(rgba(17,17,8,0.035) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+
+  a { color: inherit; }
+  img { display: block; max-width: 100%; }
+  button { font: inherit; color: inherit; }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  ::selection { background: var(--accent); color: var(--bg); }
+
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+  }
+
+  /* ── SCROLL PROGRESS ── */
+  #scroll-progress {
+    position: fixed; top: 0; left: 0; height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    width: 0%; z-index: 200; transition: width 0.1s linear;
   }
 
   /* ── NAV ── */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     display: flex; justify-content: space-between; align-items: center;
-    padding: 1.2rem 3rem;
-    background: rgba(247,245,240,0.88);
+    padding: 1.1rem 3rem;
+    background: rgba(247,245,240,0.86);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--rule);
   }
   .nav-logo {
+    display: inline-flex; align-items: center; gap: 0.6rem;
     font-family: 'DM Serif Display', serif;
-    font-size: 1.1rem;
-    letter-spacing: 0.02em;
+    font-size: 1.05rem;
+    letter-spacing: 0.01em;
     color: var(--ink);
     text-decoration: none;
   }
-  .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+  .nav-logo svg { color: var(--accent); flex-shrink: 0; }
+  .nav-links { display: flex; gap: 2.2rem; list-style: none; align-items: center; }
   .nav-links a {
     font-family: 'DM Mono', monospace;
     font-size: 0.72rem;
@@ -54,14 +107,32 @@
     color: var(--mid);
     text-decoration: none;
     transition: color 0.2s;
+    position: relative;
+    padding-bottom: 3px;
   }
-  .nav-links a:hover { color: var(--accent); }
+  .nav-links a::after {
+    content: ''; position: absolute; left: 0; bottom: -2px;
+    width: 0; height: 1px; background: var(--accent);
+    transition: width 0.25s var(--ease);
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+  .nav-links a.active { color: var(--accent); }
+
+  .nav-toggle {
+    display: none;
+    background: none; border: 1px solid var(--rule);
+    width: 38px; height: 38px;
+    align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+  .nav-toggle svg { width: 16px; height: 16px; }
 
   /* ── HERO ── */
   #hero {
     min-height: 100vh;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1.05fr 0.95fr;
     padding-top: 80px;
     position: relative;
     overflow: hidden;
@@ -70,7 +141,7 @@
   .hero-left {
     display: flex; flex-direction: column; justify-content: center;
     padding: 5rem 3rem 5rem 3rem;
-    animation: fadeUp 0.9s ease both;
+    animation: fadeUp 0.8s var(--ease) both;
   }
   .hero-tag {
     font-family: 'DM Mono', monospace;
@@ -88,19 +159,21 @@
   }
   .hero-name {
     font-family: 'DM Serif Display', serif;
-    font-size: clamp(2.8rem, 5vw, 4.8rem);
-    line-height: 1.08;
+    font-size: clamp(2.6rem, 4.6vw, 4.6rem);
+    line-height: 1.1;
     color: var(--ink);
-    margin-bottom: 1.2rem;
+    margin-bottom: 1.3rem;
+    max-width: 620px;
   }
   .hero-name em { font-style: italic; color: var(--accent); }
   .hero-subtitle {
     font-size: 1.05rem;
     color: var(--mid);
-    max-width: 420px;
+    max-width: 440px;
     margin-bottom: 2.5rem;
     font-weight: 300;
   }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 1rem; }
   .hero-cta {
     display: inline-flex; align-items: center; gap: 0.7rem;
     background: var(--ink);
@@ -111,10 +184,10 @@
     text-transform: uppercase;
     padding: 0.85rem 1.8rem;
     text-decoration: none;
-    border: none; cursor: pointer;
-    transition: background 0.2s, transform 0.15s;
+    border: 1px solid var(--ink); cursor: pointer;
+    transition: background 0.2s, transform 0.15s, color .2s;
   }
-  .hero-cta:hover { background: var(--accent); transform: translateY(-2px); }
+  .hero-cta:hover { background: var(--accent); border-color: var(--accent); transform: translateY(-2px); }
   .hero-cta-ghost {
     display: inline-flex; align-items: center; gap: 0.7rem;
     border: 1px solid var(--rule);
@@ -125,7 +198,6 @@
     text-transform: uppercase;
     padding: 0.85rem 1.8rem;
     text-decoration: none;
-    margin-left: 1rem;
     transition: border-color 0.2s, color 0.2s;
   }
   .hero-cta-ghost:hover { border-color: var(--accent); color: var(--accent); }
@@ -134,41 +206,61 @@
     display: flex; align-items: center; justify-content: center;
     padding: 4rem 3rem;
     position: relative;
-    animation: fadeUp 0.9s 0.15s ease both;
+    animation: fadeUp 0.8s 0.12s var(--ease) both;
+  }
+  .hero-right::before {
+    content: '';
+    position: absolute; inset: 10% 8%;
+    border: 1px solid var(--rule);
+    z-index: 0;
   }
 
-  /* Data pipeline visual */
+  /* Data pipeline visual — signature element */
   .pipeline-vis {
     position: relative;
     width: 100%; max-width: 400px;
+    z-index: 1;
+  }
+  .pipeline-rail {
+    position: absolute; left: 18px; top: 20px; bottom: 20px; width: 1px;
+    background: var(--rule); z-index: 0;
+  }
+  .pipeline-rail::after {
+    content: '';
+    position: absolute; left: -2.5px; width: 6px; height: 6px;
+    border-radius: 50%; background: var(--accent);
+    box-shadow: 0 0 8px 1px var(--accent);
+    animation: travel 4.5s linear infinite;
   }
   .pipeline-step {
     display: flex; align-items: center; gap: 1rem;
-    padding: 1rem 1.4rem;
+    padding: 1rem 1.3rem;
     background: var(--card-bg);
     border: 1px solid var(--rule);
-    margin-bottom: 0;
     position: relative;
-    animation: slideIn 0.6s ease both;
+    z-index: 1;
+    animation: slideIn 0.6s var(--ease) both;
+    transition: border-color 0.2s, transform 0.2s;
   }
-  .pipeline-step:nth-child(1) { animation-delay: 0.4s; }
-  .pipeline-step:nth-child(3) { animation-delay: 0.6s; }
-  .pipeline-step:nth-child(5) { animation-delay: 0.8s; }
-  .pipeline-step:nth-child(7) { animation-delay: 1.0s; }
-  .pipeline-step:nth-child(9) { animation-delay: 1.2s; }
+  .pipeline-step:hover { border-color: var(--accent); transform: translateX(3px); }
+  .pipeline-step:nth-child(2) { animation-delay: 0.3s; margin-top: 0.9rem; }
+  .pipeline-step:nth-child(4) { animation-delay: 0.45s; margin-top: 0.9rem; }
+  .pipeline-step:nth-child(6) { animation-delay: 0.6s; margin-top: 0.9rem; }
+  .pipeline-step:nth-child(8) { animation-delay: 0.75s; margin-top: 0.9rem; }
+  .pipeline-step:nth-child(10) { animation-delay: 0.9s; margin-top: 0.9rem; }
 
   .step-icon {
     width: 36px; height: 36px;
     background: var(--bg);
     border: 1px solid var(--rule);
     display: flex; align-items: center; justify-content: center;
-    font-size: 1rem;
-    flex-shrink: 0;
+    flex-shrink: 0; color: var(--ink);
   }
+  .step-icon svg { width: 17px; height: 17px; }
   .step-label {
     font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.08em;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--mid);
   }
@@ -177,32 +269,35 @@
     font-size: 0.95rem;
     color: var(--ink);
   }
-  .pipeline-arrow {
-    text-align: center;
-    padding: 0.3rem 0;
-    font-size: 0.75rem;
-    color: var(--accent);
-    font-family: 'DM Mono', monospace;
-    animation: pulse 1.8s infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 0.4; }
-    50% { opacity: 1; }
-  }
   .step-accent { border-left: 3px solid var(--accent); }
   .step-accent2 { border-left: 3px solid var(--accent2); }
 
+  /* Mobile-only condensed pipeline */
+  .pipeline-mini { display: none; position: relative; align-items: flex-start; justify-content: space-between; gap: 0.4rem; }
+  .pipeline-mini::before {
+    content: ''; position: absolute; top: 19px; left: 6%; right: 6%; height: 1px;
+    background: var(--rule); z-index: 0;
+  }
+  .pipeline-mini .pm-step { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; flex: 1; }
+  .pipeline-mini .pm-icon {
+    width: 38px; height: 38px; border: 1px solid var(--rule); background: var(--card-bg);
+    display: flex; align-items: center; justify-content: center; color: var(--ink);
+  }
+  .pipeline-mini .pm-icon svg { width: 16px; height: 16px; }
+  .pipeline-mini .pm-label {
+    font-family: 'DM Mono', monospace; font-size: 0.56rem; letter-spacing: 0.03em;
+    text-transform: uppercase; color: var(--mid); text-align: center;
+  }
+
   /* ── ABOUT ── */
   #about {
-    padding: 7rem 3rem;
+    padding: var(--space-6) 3rem;
     max-width: 1100px;
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 5rem;
-    align-items: start;
     border-top: 1px solid var(--rule);
   }
+  #about .section-label { margin-bottom: 1.5rem; }
+  .about-text { max-width: 700px; }
   .section-label {
     font-family: 'DM Mono', monospace;
     font-size: 0.68rem;
@@ -211,16 +306,10 @@
     color: var(--accent);
     margin-bottom: 0.5rem;
   }
-  .section-num {
-    font-family: 'DM Serif Display', serif;
-    font-size: 3.5rem;
-    color: var(--rule);
-    line-height: 1;
-  }
   .about-text h2 {
     font-family: 'DM Serif Display', serif;
     font-size: 2rem;
-    line-height: 1.2;
+    line-height: 1.25;
     margin-bottom: 1.2rem;
     color: var(--ink);
   }
@@ -235,6 +324,73 @@
     font-family: 'DM Serif Display', serif;
     font-size: 2.2rem; color: var(--accent);
   }
+  /* ── WORK MODES ── */
+  #work-modes {
+    padding: var(--space-6) 3rem;
+    border-top: 1px solid var(--rule);
+    background: var(--accent-soft);
+  }
+  .work-modes-inner { max-width: 1100px; margin: 0 auto; }
+  .work-modes-header { margin-bottom: 3rem; }
+  .work-modes-header h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem; line-height: 1.25;
+    color: var(--ink);
+    max-width: 600px;
+  }
+  .work-modes-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+  }
+  .work-mode-card {
+    background: var(--card-bg);
+    border: 1px solid var(--rule);
+    padding: 2.2rem;
+    position: relative;
+  }
+  .work-mode-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 3px; height: 0%;
+    background: var(--accent);
+    transition: height 0.3s ease;
+  }
+  .work-mode-card:hover::before { height: 100%; }
+  .work-mode-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.8rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .work-mode-tag .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); display: inline-block; }
+  .work-mode-tag.build {
+    display: inline-flex; width: fit-content;
+    color: white; background: var(--accent);
+    padding: 0.3rem 0.7rem;
+  }
+  .work-mode-tag.build .dot { background: white; }
+  .work-mode-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.4rem;
+    margin-bottom: 0.9rem; color: var(--ink);
+  }
+  .work-mode-card p { color: var(--mid); font-size: 0.92rem; font-weight: 300; }
+  .work-modes-cta {
+    margin-top: 2rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--mid);
+  }
+  .work-modes-cta a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent);
+    padding-bottom: 1px;
+  }
+  .work-modes-cta a:hover { color: var(--ink); border-color: var(--ink); }
+
   .stat-label {
     font-family: 'DM Mono', monospace;
     font-size: 0.65rem;
@@ -244,54 +400,118 @@
 
   /* ── SKILLS ── */
   #skills {
-    padding: 7rem 3rem;
+    padding: var(--space-6) 3rem;
     border-top: 1px solid var(--rule);
-    background: var(--ink);
-    color: var(--bg);
+    background: var(--ink-bg);
+    color: var(--ink-fg);
   }
   .skills-inner { max-width: 1100px; margin: 0 auto; }
   .skills-header {
     display: flex; justify-content: space-between; align-items: flex-end;
-    margin-bottom: 3.5rem;
+    margin-bottom: 3.5rem; gap: 1rem; flex-wrap: wrap;
   }
+  .skills-header .section-label { color: var(--accent2); }
   .skills-header h2 {
     font-family: 'DM Serif Display', serif;
     font-size: 2.2rem;
-    color: var(--bg);
+    color: var(--ink-fg);
+    line-height: 1.2;
+  }
+  .skills-header .skills-index {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-fg-mid);
   }
   .skills-grid {
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
-    background: #2a2a22;
+    background: var(--ink-line);
   }
   .skill-group {
-    background: #1a1a14;
+    background: var(--ink-card);
     padding: 2rem;
   }
   .skill-group-title {
     font-family: 'DM Mono', monospace;
     font-size: 0.65rem;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--accent);
+    color: var(--accent2);
     margin-bottom: 1.4rem;
     padding-bottom: 0.8rem;
-    border-bottom: 1px solid #2a2a22;
+    border-bottom: 1px solid var(--ink-line);
   }
   .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
   .skill-tag {
     font-family: 'DM Mono', monospace;
     font-size: 0.7rem;
     padding: 0.3rem 0.7rem;
-    border: 1px solid #3a3a30;
-    color: #B8B4A8;
+    border: 1px solid var(--ink-line);
+    color: var(--ink-fg-mid);
     letter-spacing: 0.04em;
     transition: border-color 0.2s, color 0.2s;
   }
-  .skill-tag:hover { border-color: var(--accent); color: var(--accent); }
+  .skill-tag:hover { border-color: var(--accent2); color: var(--ink-fg); }
+
+  /* Skills editor (owner-only, ?edit=1) */
+  #skills-edit-controls { margin-top: 1.5rem; }
+  #edit-panel {
+    margin-top: 1.2rem; background: var(--ink-card);
+    border: 1px solid var(--ink-line); padding: 1.8rem;
+  }
+  .edit-panel-head {
+    display:flex; justify-content:space-between; align-items:center; margin-bottom:1.2rem;
+  }
+  .edit-panel-head span {
+    font-family:'DM Mono',monospace; font-size:0.68rem; letter-spacing:0.15em;
+    text-transform:uppercase; color: var(--accent2);
+  }
+  .edit-close-btn, .edit-toggle-btn, .edit-add-group-btn {
+    background:none; border:1px solid var(--ink-line); color: var(--ink-fg-mid);
+    font-family:'DM Mono',monospace; font-size:0.65rem; letter-spacing:0.1em;
+    text-transform:uppercase; padding:0.55rem 1.1rem; cursor:pointer;
+    transition: border-color .2s, color .2s;
+  }
+  .edit-close-btn:hover, .edit-toggle-btn:hover, .edit-add-group-btn:hover {
+    border-color: var(--accent); color: var(--accent2);
+  }
+  .edit-add-group-btn { border-style: dashed; width: 100%; margin-top: 1rem; }
+  .edit-actions-row { margin-top:1.5rem; text-align:right; }
+  .edit-group-row {
+    margin-bottom:1.5rem; padding:1.2rem; background: var(--ink-bg); border:1px solid var(--ink-line);
+  }
+  .edit-group-title-row { display:flex; gap:0.6rem; align-items:center; margin-bottom:0.8rem; }
+  .edit-group-title-row input {
+    flex:1; background:transparent; border:none; border-bottom:1px solid var(--ink-line);
+    color: var(--ink-fg-mid); font-family:'DM Mono',monospace; font-size:0.72rem;
+    letter-spacing:0.08em; padding:0.3rem 0; outline:none;
+  }
+  .edit-remove-group-btn { background:none; border:none; color: var(--ink-fg-mid); cursor:pointer; font-size:0.75rem; padding:0.2rem 0.5rem; }
+  .edit-tag-list { display:flex; flex-wrap:wrap; gap:0.4rem; margin-bottom:0.6rem; }
+  .edit-tag-pill {
+    display:inline-flex; align-items:center; gap:0.3rem; font-family:'DM Mono',monospace;
+    font-size:0.65rem; padding:0.25rem 0.55rem; border:1px solid var(--ink-line); color: var(--ink-fg-mid);
+  }
+  .edit-tag-pill button { background:none; border:none; color: var(--ink-fg-mid); cursor:pointer; font-size:0.65rem; line-height:1; padding:0; }
+  .edit-add-tag-row { display:flex; gap:0.5rem; }
+  .edit-add-tag-row input {
+    flex:1; background:transparent; border:1px solid var(--ink-line); color: var(--ink-fg-mid);
+    font-family:'DM Mono',monospace; font-size:0.65rem; padding:0.35rem 0.6rem; outline:none;
+  }
+  .edit-add-tag-row button {
+    background:none; border:1px solid var(--accent); color: var(--accent2);
+    font-family:'DM Mono',monospace; font-size:0.62rem; letter-spacing:0.08em; text-transform:uppercase;
+    padding:0.35rem 0.8rem; cursor:pointer;
+  }
+  .edit-mode-note {
+    font-family:'DM Mono',monospace; font-size:0.62rem; letter-spacing:0.08em; text-transform:uppercase;
+    color: var(--ink-fg-mid); margin-bottom: 1rem;
+  }
 
   /* ── PROJECTS ── */
   #projects {
-    padding: 7rem 3rem;
+    padding: var(--space-6) 3rem;
     border-top: 1px solid var(--rule);
     max-width: 1100px; margin: 0 auto;
   }
@@ -307,12 +527,13 @@
     padding: 2rem;
     position: relative;
     overflow: hidden;
-    transition: transform 0.2s, box-shadow 0.2s;
-    cursor: pointer;
+    transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease), border-color .2s;
   }
-  .project-card:hover {
+  .project-card-slides { cursor: pointer; }
+  .project-card:hover, .project-card:focus-within {
     transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+    box-shadow: 0 12px 40px rgba(17,17,8,0.08);
+    border-color: var(--rule);
   }
   .project-card::before {
     content: '';
@@ -321,7 +542,23 @@
     background: var(--accent);
     transition: height 0.3s ease;
   }
-  .project-card:hover::before { height: 100%; }
+  .project-card:hover::before, .project-card:focus-within::before { height: 100%; }
+  .card-mode-badge {
+    position: absolute; top: 1.6rem; right: 1.6rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--mid);
+    border: 1px solid var(--rule);
+    padding: 0.25rem 0.6rem;
+    background: var(--bg);
+    z-index: 2;
+  }
+  .card-mode-badge.build {
+    color: white;
+    background: var(--accent);
+    border-color: var(--accent);
+  }
   .project-type {
     font-family: 'DM Mono', monospace;
     font-size: 0.65rem;
@@ -356,16 +593,130 @@
     border: 1px solid var(--rule);
     letter-spacing: 0.04em;
   }
-  .project-arrow {
-    position: absolute; top: 2rem; right: 2rem;
-    font-size: 1.1rem; color: var(--rule);
-    transition: color 0.2s, transform 0.2s;
+
+  /* Thumbnail with loading skeleton */
+  .slide-thumb {
+    width: 100%; aspect-ratio: 16/9;
+    background: var(--ink-bg);
+    overflow: hidden;
+    margin-bottom: 1.4rem;
+    position: relative;
+    border: 1px solid var(--rule);
   }
-  .project-card:hover .project-arrow { color: var(--accent); transform: translate(3px,-3px); }
+  .slide-thumb::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(100deg, var(--ink-card) 30%, #26261c 50%, var(--ink-card) 70%);
+    background-size: 200% 100%;
+    animation: shimmer 1.6s infinite;
+    opacity: 1; transition: opacity 0.3s ease;
+  }
+  .slide-thumb.loaded::before { opacity: 0; pointer-events: none; }
+  .slide-thumb img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease, opacity 0.3s ease;
+    opacity: 0; position: relative;
+  }
+  .slide-thumb.loaded img { opacity: 0.94; }
+  .project-card-slides:hover .slide-thumb img { transform: scale(1.04); }
+  .slide-thumb.error::before {
+    animation: none;
+    background-image: radial-gradient(rgba(245,243,236,0.06) 1px, transparent 1px);
+    background-size: 16px 16px;
+    background-color: var(--ink-card);
+  }
+  .thumb-error-msg {
+    position: absolute; inset: 0; display: none; flex-direction: column; gap: 0.5rem;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 1rem;
+  }
+  .thumb-error-msg svg { width: 20px; height: 20px; color: var(--ink-fg-mid); opacity: 0.6; }
+  .thumb-error-msg .err-title {
+    font-family: 'DM Mono', monospace; font-size: 0.64rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--ink-fg-mid);
+  }
+  .thumb-error-msg .err-sub {
+    font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.04em;
+    color: var(--ink-fg-mid); opacity: 0.7;
+  }
+  .slide-thumb.error .thumb-error-msg { display: flex; }
+  .slide-thumb-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 60%);
+    display: flex; align-items: flex-end; justify-content: space-between;
+    padding: 1rem;
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .project-card-slides:hover .slide-thumb-overlay,
+  .project-card-slides:focus-within .slide-thumb-overlay { opacity: 1; }
+  .slide-count-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--accent); color: white;
+    padding: 0.25rem 0.6rem;
+  }
+  .view-slides-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: white; color: var(--ink);
+    padding: 0.25rem 0.7rem;
+    border: none; cursor: pointer;
+  }
+
+  /* Interactive tool card (live SQL explorer) */
+  .project-card-tool { display: flex; flex-direction: column; }
+  .tool-preview {
+    background: var(--ink-bg);
+    border: 1px solid var(--rule);
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 1.4rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    line-height: 1.7;
+    color: #7DDA9A;
+  }
+  .tool-preview .tp-line { display: block; }
+  .tool-preview .tp-dim { color: var(--ink-fg-mid); }
+  .tool-preview .tp-accent { color: var(--accent2); }
+  .project-links { display: flex; gap: 0.6rem; margin-top: 1.4rem; }
+  .project-link-btn {
+    flex: 1; text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 0.65rem 1rem; text-decoration: none;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+  }
+  .project-link-btn.primary { background: var(--ink); color: var(--bg); border: 1px solid var(--ink); }
+  .project-link-btn.primary:hover { background: var(--accent); border-color: var(--accent); }
+  .project-link-btn.ghost { border: 1px solid var(--rule); color: var(--mid); }
+  .project-link-btn.ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Placeholder / in-progress card */
+  .project-card-placeholder {
+    border: 1px dashed var(--rule);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    min-height: 280px; padding: 2rem;
+    text-align: center; gap: 0.9rem;
+  }
+  .placeholder-icon { color: var(--rule); }
+  .placeholder-icon svg { width: 30px; height: 30px; }
+  .placeholder-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--accent);
+  }
+  .placeholder-title {
+    font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: var(--ink);
+  }
+  .placeholder-note { font-size: 0.85rem; color: var(--mid); font-weight: 300; max-width: 300px; }
 
   /* ── CONTACT ── */
   #contact {
-    padding: 7rem 3rem;
+    padding: var(--space-6) 3rem;
     border-top: 1px solid var(--rule);
     text-align: center;
     background: var(--bg);
@@ -374,7 +725,7 @@
   .contact-inner .section-label { justify-content: center; display: flex; }
   .contact-inner h2 {
     font-family: 'DM Serif Display', serif;
-    font-size: 2.8rem; line-height: 1.1;
+    font-size: 2.8rem; line-height: 1.15;
     margin: 1rem 0 1.2rem;
     color: var(--ink);
   }
@@ -390,17 +741,11 @@
     transition: color 0.2s;
   }
   .contact-email:hover { color: var(--accent); }
-  .social-links {
-    display: flex; justify-content: center; gap: 1.5rem;
-    margin-top: 2.5rem;
-  }
+  .social-links { display: flex; justify-content: center; gap: 1.5rem; margin-top: 2.5rem; }
   .social-link {
     font-family: 'DM Mono', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--mid);
-    text-decoration: none;
+    font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--mid); text-decoration: none;
     display: flex; align-items: center; gap: 0.4rem;
     transition: color 0.2s;
   }
@@ -421,45 +766,115 @@
   }
 
   /* ── ANIMATIONS ── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateX(20px); }
-    to { opacity: 1; transform: translateX(0); }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+  @keyframes travel { 0% { top: 0%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .hero-left, .hero-right, .pipeline-step, .reveal { animation: none !important; opacity: 1 !important; transform: none !important; }
+    .pipeline-rail::after { animation: none; display: none; }
+    * { transition-duration: 0.01ms !important; }
   }
 
   /* ── SCROLL REVEAL ── */
-  .reveal {
-    opacity: 0; transform: translateY(20px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
   .reveal.visible { opacity: 1; transform: translateY(0); }
 
+  /* ── LIGHTBOX ── */
+  #lightbox {
+    display: none;
+    position: fixed; inset: 0; z-index: 999;
+    background: rgba(10,10,8,0.96);
+    flex-direction: column;
+    align-items: center; justify-content: center;
+  }
+  #lightbox.open { display: flex; }
+  .lb-header { width: 100%; max-width: 1100px; display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; }
+  .lb-title { font-family: 'DM Serif Display', serif; font-size: 1rem; color: var(--ink-fg); }
+  .lb-meta { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-fg-mid); }
+  .lb-close {
+    background: none; border: 1px solid var(--ink-line);
+    color: var(--ink-fg-mid); font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.4rem 0.9rem;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .lb-close:hover { border-color: var(--accent); color: var(--accent2); }
+  .lb-stage { flex: 1; width: 100%; max-width: 1100px; display: flex; align-items: center; justify-content: center; padding: 0 1.5rem; gap: 1rem; position: relative; }
+  .lb-slide { flex: 1; max-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .lb-slide img { max-width: 100%; max-height: 70vh; object-fit: contain; border: 1px solid #222; transition: opacity 0.25s; }
+  .lb-nav {
+    background: none; border: 1px solid var(--ink-line);
+    color: var(--ink-fg-mid); width: 42px; height: 42px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: all 0.2s; cursor: pointer;
+  }
+  .lb-nav svg { width: 16px; height: 16px; }
+  .lb-nav:hover:not(:disabled) { border-color: var(--accent); color: var(--accent2); }
+  .lb-nav:disabled { opacity: 0.2; cursor: default; }
+  .lb-footer { width: 100%; max-width: 1100px; padding: 1rem 1.5rem; display: flex; align-items: center; gap: 0.5rem; justify-content: center; flex-wrap: wrap; max-height: 4rem; overflow-y: auto; }
+  .lb-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-line); cursor: pointer; transition: background 0.2s, transform 0.2s; border: none; padding: 0; }
+  .lb-dot.active { background: var(--accent); transform: scale(1.4); }
+
   /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .work-modes-grid { grid-template-columns: 1fr; }
+    .projects-grid { grid-template-columns: 1fr; }
+  }
+
   @media (max-width: 768px) {
-    nav { padding: 1rem 1.5rem; }
-    .nav-links { display: none; }
-    #hero { grid-template-columns: 1fr; }
+    nav { padding: 1rem 1.25rem; }
+    .nav-links {
+      display: flex; flex-direction: column; align-items: flex-start; gap: 0;
+      position: fixed; top: 63px; left: 0; right: 0;
+      background: var(--bg); border-bottom: 1px solid var(--rule);
+      max-height: 0; overflow: hidden; transition: max-height 0.3s var(--ease);
+    }
+    .nav-links.open { max-height: 320px; }
+    .nav-links li { width: 100%; }
+    .nav-links a { display: block; width: 100%; padding: 1rem 1.25rem; border-top: 1px solid var(--rule); }
+    .nav-links a::after { display: none; }
+    .nav-toggle { display: flex; }
+
+    #hero { grid-template-columns: 1fr; min-height: auto; }
     .hero-right { display: none; }
-    .hero-left { padding: 4rem 1.5rem 3rem; }
-    #about { grid-template-columns: 1fr; gap: 2rem; padding: 4rem 1.5rem; }
+    .hero-left { padding: 4rem 1.5rem 2.5rem; }
+    .pipeline-mini { display: flex; margin: 0 1.5rem 3rem; }
+
+    #about { padding: 4rem 1.5rem; }
+    #work-modes { padding: 4rem 1.5rem; }
+    .about-stats { grid-template-columns: 1fr 1fr; }
     #skills { padding: 4rem 1.5rem; }
     .skills-grid { grid-template-columns: 1fr; }
     #projects { padding: 4rem 1.5rem; }
-    .projects-grid { grid-template-columns: 1fr; }
     #contact { padding: 4rem 1.5rem; }
-    footer { flex-direction: column; gap: 0.5rem; padding: 1.5rem; }
+    .contact-inner h2 { font-size: 2.1rem; }
+    footer { flex-direction: column; gap: 0.5rem; padding: 1.5rem; text-align: center; }
   }
 </style>
 </head>
 <body>
 
+<div id="scroll-progress"></div>
+
 <!-- NAV -->
 <nav>
-  <a class="nav-logo" href="#">Michel Magdy</a>
-  <ul class="nav-links">
+  <a class="nav-logo" href="#hero" aria-label="Michel Magdy — home">
+    <svg viewBox="0 0 28 14" width="24" height="12" aria-hidden="true">
+      <circle cx="3" cy="7" r="2.4" fill="currentColor"/>
+      <circle cx="14" cy="3" r="2.4" fill="currentColor"/>
+      <circle cx="25" cy="7" r="2.4" fill="currentColor"/>
+      <path d="M5 6.3 12 3.6M16 3.6 23 6.3" stroke="currentColor" stroke-width="1.3" fill="none"/>
+    </svg>
+    Michel Magdy
+  </a>
+  <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" id="nav-toggle-icon">
+      <path d="M3 6h18M3 12h18M3 18h18"/>
+    </svg>
+  </button>
+  <ul class="nav-links" id="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#skills">Skills</a></li>
     <li><a href="#projects">Projects</a></li>
@@ -470,54 +885,70 @@
 <!-- HERO -->
 <section id="hero">
   <div class="hero-left">
-    <div class="hero-tag">Data & Social Media Analyst</div>
-    <h1 class="hero-name">Turning <em>raw data</em> into real decisions.</h1>
-    <p class="hero-subtitle">I build ETL pipelines, uncover social media patterns, and transform messy data into clear, actionable insights.</p>
-    <div>
-      <a href="#projects" class="hero-cta">View Projects →</a>
-      <a href="#contact" class="hero-cta-ghost">Get in touch</a>
+    <div class="hero-tag">Marketing Analytics &amp; Data Insights</div>
+    <h1 class="hero-name">Data and social listening, turned into <em>decisions you can act on</em>.</h1>
+    <p class="hero-subtitle">I analyze social media, campaigns, and business data — then build the systems that keep the insights coming, not just a one-time report.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="hero-cta">Let's talk about your project →</a>
+      <a href="#projects" class="hero-cta-ghost">View Projects</a>
     </div>
   </div>
-  <div class="hero-right">
+
+  <div class="pipeline-mini" aria-hidden="true">
+    <div class="pm-step">
+      <div class="pm-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v11"/><path d="M7.5 10.5 12 15l4.5-4.5"/><path d="M4 15.5v3A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5v-3"/></svg></div>
+      <div class="pm-label">Extract</div>
+    </div>
+    <div class="pm-step">
+      <div class="pm-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 3.5v2.2M12 18.3v2.2M20.5 12h-2.2M5.7 12H3.5M17.7 6.3l-1.5 1.5M7.8 16.2l-1.5 1.5M17.7 17.7l-1.5-1.5M7.8 7.8 6.3 6.3"/></svg></div>
+      <div class="pm-label">Transform</div>
+    </div>
+    <div class="pm-step">
+      <div class="pm-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5.5" rx="7" ry="2.5"/><path d="M5 5.5v6c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5v-6"/><path d="M5 11.5v6c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5v-6"/></svg></div>
+      <div class="pm-label">Load</div>
+    </div>
+    <div class="pm-step">
+      <div class="pm-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V11M9.5 20V4M15 20v-8M20.5 20v-5"/></svg></div>
+      <div class="pm-label">Analyze</div>
+    </div>
+    <div class="pm-step">
+      <div class="pm-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 3 3 10.5l7 2.5m11-10-3.5 17-7-6m10.5-11L10.5 15"/></svg></div>
+      <div class="pm-label">Deliver</div>
+    </div>
+  </div>
+
+  <div class="hero-right" aria-hidden="true">
     <div class="pipeline-vis">
+      <div class="pipeline-rail"></div>
       <div class="pipeline-step step-accent2">
-        <div class="step-icon">📥</div>
-        <div>
-          <div class="step-label">Extract</div>
-          <div class="step-name">Raw Source Data</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v11"/><path d="M7.5 10.5 12 15l4.5-4.5"/><path d="M4 15.5v3A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5v-3"/></svg>
         </div>
+        <div><div class="step-label">Extract</div><div class="step-name">Raw Source Data</div></div>
       </div>
-      <div class="pipeline-arrow">▼ · · ·</div>
       <div class="pipeline-step step-accent">
-        <div class="step-icon">⚙️</div>
-        <div>
-          <div class="step-label">Transform</div>
-          <div class="step-name">Clean & Normalize</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 3.5v2.2M12 18.3v2.2M20.5 12h-2.2M5.7 12H3.5M17.7 6.3l-1.5 1.5M7.8 16.2l-1.5 1.5M17.7 17.7l-1.5-1.5M7.8 7.8 6.3 6.3"/></svg>
         </div>
+        <div><div class="step-label">Transform</div><div class="step-name">Clean &amp; Normalize</div></div>
       </div>
-      <div class="pipeline-arrow">▼ · · ·</div>
       <div class="pipeline-step step-accent2">
-        <div class="step-icon">🗄️</div>
-        <div>
-          <div class="step-label">Load</div>
-          <div class="step-name">Data Warehouse</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5.5" rx="7" ry="2.5"/><path d="M5 5.5v6c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5v-6"/><path d="M5 11.5v6c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5v-6"/></svg>
         </div>
+        <div><div class="step-label">Load</div><div class="step-name">Data Warehouse</div></div>
       </div>
-      <div class="pipeline-arrow">▼ · · ·</div>
       <div class="pipeline-step step-accent">
-        <div class="step-icon">📊</div>
-        <div>
-          <div class="step-label">Analyze</div>
-          <div class="step-name">Social & Business Insights</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V11M9.5 20V4M15 20v-8M20.5 20v-5"/></svg>
         </div>
+        <div><div class="step-label">Analyze</div><div class="step-name">Social &amp; Business Insights</div></div>
       </div>
-      <div class="pipeline-arrow">▼ · · ·</div>
       <div class="pipeline-step step-accent2">
-        <div class="step-icon">💡</div>
-        <div>
-          <div class="step-label">Deliver</div>
-          <div class="step-name">Dashboards & Reports</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 3 3 10.5l7 2.5m11-10-3.5 17-7-6m10.5-11L10.5 15"/></svg>
         </div>
+        <div><div class="step-label">Deliver</div><div class="step-name">Dashboards &amp; Reports</div></div>
       </div>
     </div>
   </div>
@@ -525,28 +956,39 @@
 
 <!-- ABOUT -->
 <section id="about">
-  <div>
-    <div class="section-label">About</div>
-    <div class="section-num">01</div>
-  </div>
+  <div class="section-label">About</div>
   <div class="about-text reveal">
-    <h2>I speak fluent <em>data</em> — and translate it for humans.</h2>
-    <p>I'm a data analyst specializing in ETL engineering and social media intelligence. I help organizations move from scattered, siloed data to unified pipelines that actually power decisions.</p>
-    <p>Whether it's automating a messy ingestion workflow, tracking brand sentiment across platforms, or building a Tableau dashboard for a non-technical team — I close the gap between raw data and real insight.</p>
+    <h2>I turn marketing and social data into <em>insight</em> — and build the systems to keep it running.</h2>
+    <p>I work with brands and agencies to understand what's actually driving performance — across social media, campaigns, and customer data. Not a one-off deck, but a pipeline that keeps answering questions as your data grows.</p>
+    <p>Tracking brand sentiment, reporting on a campaign, or building a dashboard your team can trust — I connect the raw numbers to the decision they're supposed to inform. Whether that's a one-time deck or an end-to-end build, the work starts the same way: understanding the question before touching the data.</p>
     <div class="about-stats">
-      <div>
-        <div class="stat-num">50+</div>
-        <div class="stat-label">Social Media Analyses</div>
+      <div><div class="stat-num">50+</div><div class="stat-label">Social &amp; Marketing Analyses</div></div>
+      <div><div class="stat-num">5</div><div class="stat-label">End-to-End Data Pipelines</div></div>
+      <div><div class="stat-num">10+</div><div class="stat-label">Power BI Dashboards</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK MODES -->
+<section id="work-modes">
+  <div class="work-modes-inner">
+    <div class="work-modes-header reveal">
+      <div class="section-label">How I Work</div>
+      <h2>Two ways to work together.</h2>
+    </div>
+    <div class="work-modes-grid reveal">
+      <div class="work-mode-card">
+        <div class="work-mode-tag"><span class="dot"></span>One-time Deck</div>
+        <div class="work-mode-title">A focused analysis, delivered.</div>
+        <p>A clear, presentation-ready deck — a social listening report, a campaign review, a market research summary. Good for a single decision, a stakeholder update, or a pitch.</p>
       </div>
-      <div>
-        <div class="stat-num">5</div>
-        <div class="stat-label">ETL Projects built</div>
-      </div>
-      <div>
-        <div class="stat-num">10+</div>
-        <div class="stat-label">Power BI Dashboards</div>
+      <div class="work-mode-card">
+        <div class="work-mode-tag build"><span class="dot"></span>End-to-End Build</div>
+        <div class="work-mode-title">A system that keeps working.</div>
+        <p>I set up the full pipeline — data collection, cleaning, and a live dashboard or reporting system — so the insight keeps updating after I'm done. Good for ongoing tracking or a team that needs repeatable reporting.</p>
       </div>
     </div>
+    <p class="work-modes-cta">Not sure which one you need? <a href="#contact">Let's talk about it.</a></p>
   </div>
 </section>
 
@@ -555,226 +997,57 @@
   <div class="skills-inner">
     <div class="skills-header reveal">
       <div>
-        <div class="section-label" style="color:#9B8FFF">Skills</div>
+        <div class="section-label">Skills</div>
         <h2>The full stack<br>of my toolkit.</h2>
       </div>
-      <span style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:#555548">02 / Skills</span>
+      <span class="skills-index">Social Listening · SQL · Python · Power BI</span>
     </div>
     <div class="skills-grid reveal" id="skills-grid"></div>
 
-    <!-- Edit Panel -->
-    <div id="edit-panel" style="display:none;margin-top:2rem;background:#1a1a14;border:1px solid #3a3a30;padding:1.8rem;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem;">
-        <span style="font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:#9B8FFF;">Edit Skills</span>
-        <button onclick="closeEditor()" style="background:none;border:none;color:#555548;cursor:pointer;font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;">✕ Close</button>
+    <!-- Owner-only skills editor: append ?edit=1 to the URL to access -->
+    <div id="skills-edit-controls" style="display:none;">
+      <div id="edit-panel" style="display:none;">
+        <div class="edit-panel-head">
+          <span>Edit Skills</span>
+          <button class="edit-close-btn" onclick="closeEditor()">✕ Close</button>
+        </div>
+        <div id="edit-groups"></div>
+        <button class="edit-add-group-btn" onclick="addGroup()">+ Add Category</button>
       </div>
-      <div id="edit-groups"></div>
-      <button onclick="addGroup()" style="margin-top:1rem;background:none;border:1px dashed #3a3a30;color:#555548;font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.6rem 1.2rem;cursor:pointer;width:100%;transition:border-color 0.2s,color 0.2s;" onmouseover="this.style.borderColor='#5B3EE8';this.style.color='#9B8FFF'" onmouseout="this.style.borderColor='#3a3a30';this.style.color='#555548'">+ Add Category</button>
-    </div>
-
-    <div style="margin-top:1.5rem;text-align:right;">
-      <button onclick="toggleEditor()" id="edit-btn" style="background:none;border:1px solid #3a3a30;color:#555548;font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.6rem 1.4rem;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='#5B3EE8';this.style.color='#9B8FFF'" onmouseout="this.style.borderColor='#3a3a30';this.style.color='#555548'">✎ Edit Skills</button>
+      <div class="edit-actions-row">
+        <button class="edit-toggle-btn" onclick="toggleEditor()" id="edit-btn">✎ Edit Skills</button>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- SLIDE VIEWER STYLES -->
-<style>
-  /* Project cards with thumbnail */
-  .project-card-slides { cursor: pointer; }
-  .slide-thumb {
-    width: 100%; aspect-ratio: 16/9;
-    background: #0a0a08;
-    overflow: hidden;
-    margin-bottom: 1.4rem;
-    position: relative;
-    border: 1px solid var(--rule);
-  }
-  .slide-thumb img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    transition: transform 0.4s ease;
-    opacity: 0.92;
-  }
-  .project-card-slides:hover .slide-thumb img { transform: scale(1.04); }
-  .slide-thumb-overlay {
-    position: absolute; inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 60%);
-    display: flex; align-items: flex-end; justify-content: space-between;
-    padding: 1rem;
-    opacity: 0; transition: opacity 0.3s;
-  }
-  .project-card-slides:hover .slide-thumb-overlay { opacity: 1; }
-  .slide-count-badge {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.62rem; letter-spacing: 0.1em;
-    text-transform: uppercase;
-    background: var(--accent); color: white;
-    padding: 0.25rem 0.6rem;
-  }
-  .view-slides-btn {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.62rem; letter-spacing: 0.1em;
-    text-transform: uppercase;
-    background: white; color: var(--ink);
-    padding: 0.25rem 0.7rem;
-    border: none; cursor: pointer;
-  }
-
-  /* Interactive tool card (e.g. live SQL explorer) */
-  .project-card-tool {
-    display: flex; flex-direction: column;
-  }
-  .tool-preview {
-    background: #0a0a08;
-    border: 1px solid var(--rule);
-    padding: 1.2rem 1.4rem;
-    margin-bottom: 1.4rem;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-    line-height: 1.7;
-    color: #7DDA9A;
-  }
-  .tool-preview .tp-line { display: block; }
-  .tool-preview .tp-dim { color: #555548; }
-  .tool-preview .tp-accent { color: #9B8FFF; }
-  .project-links {
-    display: flex; gap: 0.6rem; margin-top: 1.4rem;
-  }
-  .project-link-btn {
-    flex: 1;
-    text-align: center;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 0.65rem 1rem;
-    text-decoration: none;
-    transition: background 0.2s, color 0.2s, border-color 0.2s;
-  }
-  .project-link-btn.primary {
-    background: var(--ink); color: var(--bg);
-  }
-  .project-link-btn.primary:hover { background: var(--accent); }
-  .project-link-btn.ghost {
-    border: 1px solid var(--rule); color: var(--mid);
-  }
-  .project-link-btn.ghost:hover { border-color: var(--accent); color: var(--accent); }
-
-  /* Placeholder card */
-  .project-card-placeholder {
-    border: 1px dashed var(--rule);
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    min-height: 280px; padding: 2rem;
-    text-align: center; gap: 0.8rem;
-  }
-  .placeholder-icon { font-size: 2rem; opacity: 0.3; }
-  .placeholder-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.68rem; letter-spacing: 0.15em;
-    text-transform: uppercase; color: var(--mid);
-  }
-  .placeholder-note {
-    font-size: 0.85rem; color: var(--rule);
-    font-weight: 300;
-  }
-
-  /* LIGHTBOX */
-  #lightbox {
-    display: none;
-    position: fixed; inset: 0; z-index: 999;
-    background: rgba(10,10,8,0.96);
-    flex-direction: column;
-    align-items: center; justify-content: center;
-  }
-  #lightbox.open { display: flex; }
-
-  .lb-header {
-    width: 100%; max-width: 1100px;
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 1rem 1.5rem;
-  }
-  .lb-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1rem; color: #F7F5F0;
-  }
-  .lb-meta {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem; letter-spacing: 0.12em;
-    text-transform: uppercase; color: #555548;
-  }
-  .lb-close {
-    background: none; border: 1px solid #333;
-    color: #888; font-family: 'DM Mono', monospace;
-    font-size: 0.65rem; letter-spacing: 0.1em;
-    text-transform: uppercase; padding: 0.4rem 0.9rem;
-    cursor: pointer; transition: all 0.2s;
-  }
-  .lb-close:hover { border-color: var(--accent); color: var(--accent); }
-
-  .lb-stage {
-    flex: 1; width: 100%; max-width: 1100px;
-    display: flex; align-items: center; justify-content: center;
-    padding: 0 1.5rem; gap: 1rem;
-    position: relative;
-  }
-  .lb-slide {
-    flex: 1; max-height: 70vh;
-    display: flex; align-items: center; justify-content: center;
-    overflow: hidden;
-  }
-  .lb-slide img {
-    max-width: 100%; max-height: 70vh;
-    object-fit: contain;
-    border: 1px solid #222;
-    transition: opacity 0.25s;
-  }
-  .lb-nav {
-    background: none; border: 1px solid #333;
-    color: #888; width: 42px; height: 42px;
-    font-size: 1.1rem; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0; transition: all 0.2s;
-  }
-  .lb-nav:hover { border-color: var(--accent); color: var(--accent); }
-  .lb-nav:disabled { opacity: 0.2; cursor: default; }
-
-  .lb-footer {
-    width: 100%; max-width: 1100px;
-    padding: 1rem 1.5rem;
-    display: flex; align-items: center; gap: 0.5rem;
-    justify-content: center;
-  }
-  .lb-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: #333; cursor: pointer;
-    transition: background 0.2s, transform 0.2s;
-    border: none; padding: 0;
-  }
-  .lb-dot.active { background: var(--accent); transform: scale(1.4); }
-</style>
-
 <!-- PROJECTS -->
-<section id="projects" style="max-width:1100px;margin:0 auto;padding:7rem 3rem;border-top:1px solid var(--rule);">
+<section id="projects">
   <div class="projects-header reveal">
     <div class="section-label">Projects</div>
-    <h2 style="font-family:'DM Serif Display',serif;font-size:2.2rem;">Selected work.</h2>
+    <h2>Selected work.</h2>
   </div>
   <div class="projects-grid reveal">
 
     <!-- REAL PROJECT: Audi KSA -->
-    <div class="project-card project-card-slides" onclick="openLightbox('audi')">
-      <div class="slide-thumb">
-        <img id="audi-thumb" src="" alt="Audi KSA Digital Presence Analysis" />
+    <div class="project-card project-card-slides" role="button" tabindex="0" aria-label="View Audi KSA Digital Presence Performance Analysis, 18 slides"
+         onclick="openLightbox('audi')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox('audi')}">
+      <div class="slide-thumb" id="audi-thumb-wrap">
+        <img id="audi-thumb" src="" alt="" />
+        <div class="thumb-error-msg">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>
+          <div class="err-title">Preview unavailable</div>
+          <div class="err-sub">Click to view slides</div>
+        </div>
         <div class="slide-thumb-overlay">
           <span class="slide-count-badge">18 slides</span>
           <span class="view-slides-btn">View Slides ↗</span>
         </div>
       </div>
-      <div class="project-type"><span class="dot"></span>Social Media Analysis</div>
+      <div class="card-mode-badge">One-time Deck</div>
+      <div class="project-type"><span class="dot"></span>Social Listening &amp; Insights</div>
       <div class="project-title">Audi KSA — Digital Presence Performance Analysis</div>
-      <p class="project-desc">Q1 2024 analysis of Audi KSA's social media across Instagram, Twitter/X, Facebook, LinkedIn & YouTube. Measured engagement, sentiment, and content performance using Python and data processing methodology.</p>
+      <p class="project-desc">Q1 2024 analysis of Audi KSA's social media across Instagram, Twitter/X, Facebook, LinkedIn &amp; YouTube. Measured engagement, sentiment, and content performance using Python and data processing methodology.</p>
       <div class="project-tools">
         <span class="tool-chip">Social Media</span>
         <span class="tool-chip">Python</span>
@@ -784,17 +1057,24 @@
     </div>
 
     <!-- REAL PROJECT: GL3 Metro Line -->
-    <div class="project-card project-card-slides" onclick="openLightbox('gl3')">
-      <div class="slide-thumb">
-        <img id="gl3-thumb" src="" alt="GL3 Metro Line Insights" />
+    <div class="project-card project-card-slides" role="button" tabindex="0" aria-label="View GL3 Metro Line Consumer Insights Survey, 22 slides"
+         onclick="openLightbox('gl3')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox('gl3')}">
+      <div class="slide-thumb" id="gl3-thumb-wrap">
+        <img id="gl3-thumb" src="" alt="" />
+        <div class="thumb-error-msg">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>
+          <div class="err-title">Preview unavailable</div>
+          <div class="err-sub">Click to view slides</div>
+        </div>
         <div class="slide-thumb-overlay">
           <span class="slide-count-badge">22 slides</span>
           <span class="view-slides-btn">View Slides ↗</span>
         </div>
       </div>
-      <div class="project-type"><span class="dot"></span>Market Research & Data Analysis</div>
+      <div class="card-mode-badge">One-time Deck</div>
+      <div class="project-type"><span class="dot"></span>Marketing &amp; Consumer Insights</div>
       <div class="project-title">GL3 Metro Line — Consumer Insights Survey</div>
-      <p class="project-desc">Quantitative survey of 1,043 respondents exploring transportation behavior, GL3 rider experience, need gaps, and advertising channel effectiveness, translated into a full insights & recommendations deck.</p>
+      <p class="project-desc">Quantitative survey of 1,043 respondents exploring transportation behavior, GL3 rider experience, need gaps, and advertising channel effectiveness, translated into a full insights &amp; recommendations deck.</p>
       <div class="project-tools">
         <span class="tool-chip">Market Research</span>
         <span class="tool-chip">Survey Analysis</span>
@@ -803,14 +1083,69 @@
       </div>
     </div>
 
+    <!-- REAL PROJECT: Velmora Digital Presence Analysis -->
+    <div class="project-card project-card-slides" role="button" tabindex="0" aria-label="View Velmora Digital Presence Performance Analysis, 18 slides"
+         onclick="openLightbox('velmora')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox('velmora')}">
+      <div class="slide-thumb" id="velmora-thumb-wrap">
+        <img id="velmora-thumb" src="" alt="" />
+        <div class="thumb-error-msg">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>
+          <div class="err-title">Preview unavailable</div>
+          <div class="err-sub">Click to view slides</div>
+        </div>
+        <div class="slide-thumb-overlay">
+          <span class="slide-count-badge">18 slides</span>
+          <span class="view-slides-btn">View Slides ↗</span>
+        </div>
+      </div>
+      <div class="card-mode-badge">One-time Deck</div>
+      <div class="project-type"><span class="dot"></span>Social Listening &amp; Insights</div>
+      <div class="project-title">Velmora — Digital Presence Performance Analysis</div>
+      <p class="project-desc">Q1 2024 analysis of an automotive brand's social media across Instagram, X, Facebook, LinkedIn &amp; YouTube. Measured engagement, sentiment, and content performance using Python and data processing methodology. Brand and examples anonymized for confidentiality.</p>
+      <div class="project-tools">
+        <span class="tool-chip">Social Media</span>
+        <span class="tool-chip">Python</span>
+        <span class="tool-chip">Sentiment Analysis</span>
+        <span class="tool-chip">Engagement Metrics</span>
+      </div>
+    </div>
+
+    <!-- REAL PROJECT: NYC Transit Rider Insights -->
+    <div class="project-card project-card-slides" role="button" tabindex="0" aria-label="View NYC Transit Rider Experience insights, 11 slides"
+         onclick="openLightbox('nyc')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox('nyc')}">
+      <div class="slide-thumb" id="nyc-thumb-wrap">
+        <img id="nyc-thumb" src="" alt="" />
+        <div class="thumb-error-msg">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>
+          <div class="err-title">Preview unavailable</div>
+          <div class="err-sub">Click to view slides</div>
+        </div>
+        <div class="slide-thumb-overlay">
+          <span class="slide-count-badge">11 slides</span>
+          <span class="view-slides-btn">View Slides ↗</span>
+        </div>
+      </div>
+      <div class="card-mode-badge">One-time Deck</div>
+      <div class="project-type"><span class="dot"></span>Marketing &amp; Consumer Insights</div>
+      <div class="project-title">NYC Transit Rider Experience — Spring 2026 Insights</div>
+      <p class="project-desc">Analysis of the MTA's public "Customers Count" rider satisfaction survey — 92,000+ subway riders across NYC's five boroughs. Trends, key drivers, borough gaps, and ranked recommendations, built entirely on public data.</p>
+      <div class="project-tools">
+        <span class="tool-chip">Public Data</span>
+        <span class="tool-chip">Survey Analysis</span>
+        <span class="tool-chip">Data Visualization</span>
+        <span class="tool-chip">Consumer Insights</span>
+      </div>
+    </div>
+
     <!-- REAL PROJECT: E-Commerce ETL + Live SQL Explorer -->
     <div class="project-card project-card-tool">
-      <div class="tool-preview">
+      <div class="tool-preview" aria-hidden="true">
         <span class="tp-line"><span class="tp-dim">--</span> Revenue by state</span>
         <span class="tp-line"><span class="tp-accent">SELECT</span> c.state, SUM(oi.price)</span>
         <span class="tp-line"><span class="tp-accent">FROM</span> orders o <span class="tp-accent">JOIN</span> customers c ...</span>
         <span class="tp-line"><span class="tp-dim">→ running live in your browser · WASM SQLite</span></span>
       </div>
+      <div class="card-mode-badge build">End-to-End Build</div>
       <div class="project-type"><span class="dot"></span>SQL + Data Engineering</div>
       <div class="project-title">E-Commerce ETL Pipeline &amp; Live SQL Explorer</div>
       <p class="project-desc">A full ETL pipeline (extract → clean → load) turning messy raw e-commerce data into a normalized SQLite database. Includes a live, in-browser SQL explorer — real queries run against the real database, no backend, no precomputed results.</p>
@@ -827,11 +1162,21 @@
       </div>
     </div>
 
+    <!-- IN PROGRESS: Pew AI Survey -->
+    <div class="project-card-placeholder">
+      <div class="placeholder-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V11M9.5 20V4M15 20v-8M20.5 20v-5"/></svg>
+      </div>
+      <div class="placeholder-label">In Progress</div>
+      <div class="placeholder-title">Americans &amp; AI — Survey Dashboard</div>
+      <p class="placeholder-note">A Power BI dashboard built on a Pew Research–calibrated AI attitudes dataset. Coming soon.</p>
+    </div>
+
   </div>
 </section>
 
 <!-- LIGHTBOX -->
-<div id="lightbox">
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Slide viewer">
   <div class="lb-header">
     <div>
       <div class="lb-title" id="lb-title">Project</div>
@@ -840,17 +1185,78 @@
     <button class="lb-close" onclick="closeLightbox()">✕ Close</button>
   </div>
   <div class="lb-stage">
-    <button class="lb-nav" id="lb-prev" onclick="lbNav(-1)">←</button>
+    <button class="lb-nav" id="lb-prev" onclick="lbNav(-1)" aria-label="Previous slide">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5 8 12l7 7"/></svg>
+    </button>
     <div class="lb-slide"><img id="lb-img" src="" alt="" /></div>
-    <button class="lb-nav" id="lb-next" onclick="lbNav(1)">→</button>
+    <button class="lb-nav" id="lb-next" onclick="lbNav(1)" aria-label="Next slide">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+    </button>
   </div>
   <div class="lb-footer" id="lb-dots"></div>
 </div>
 
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner reveal">
+    <div class="section-label">Contact</div>
+    <h2>Let's build something <em>meaningful</em>.</h2>
+    <p>Open to freelance projects, agency partnerships, and part-time work — plus full-time roles. Whether you need a one-time deck or a system built to last, let's talk.</p>
+    <a class="contact-email" href="mailto:michel.magdy60@gmail.com">michel.magdy60@gmail.com</a>
+    <div class="social-links">
+      <a class="social-link" href="https://www.linkedin.com/in/michel-magdy-00770b191" target="_blank" rel="noopener">⬡ LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Michel Magdy</span>
+  <span>Marketing Analytics &amp; Data Insights</span>
+</footer>
+
 <script>
+  // ── MOBILE NAV ──
+  const navToggle = document.getElementById('nav-toggle');
+  const navLinks = document.getElementById('nav-links');
+  navToggle.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+  }));
+
+  // ── SCROLL PROGRESS + ACTIVE NAV LINK ──
+  const progressBar = document.getElementById('scroll-progress');
+  const sections = ['hero','about','skills','projects','contact'].map(id => document.getElementById(id));
+  function onScroll() {
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    progressBar.style.width = scrolled + '%';
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  const navAnchors = Array.from(navLinks.querySelectorAll('a'));
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navAnchors.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+      }
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  sections.forEach(s => { if (s) sectionObserver.observe(s); });
+
   // ── PDF SLIDE VIEWER ──
-  // Slides are rendered from the PDF via PDF.js (CDN)
   const PDFJS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+
+  // Velmora & NYC Transit PDFs are hosted directly on GitHub (not bundled into the
+  // Vercel build) and loaded from raw.githubusercontent.com, which serves files
+  // with permissive CORS headers so PDF.js can fetch them cross-origin.
+  // ⚠️ UPDATE THIS if your repo name, branch, or folder differs:
+  const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/michelmagdy60/portfolio/main/assets';
 
   const projects = {
     audi: {
@@ -863,6 +1269,18 @@
       title: 'GL3 Metro Line — Consumer Insights Survey',
       pdfUrl: 'assets/GL3_Metro_Line_Insights_-_Michel_Magdy.pdf',
       thumbId: 'gl3-thumb',
+      slides: [], total: 0, loaded: false
+    },
+    velmora: {
+      title: 'Velmora — Digital Presence Performance Analysis Q1 2024',
+      pdfUrl: `${GITHUB_RAW_BASE}/Velmora_Digital_Presence_Analysis_-_Michel_Magdy.pdf`,
+      thumbId: 'velmora-thumb',
+      slides: [], total: 0, loaded: false
+    },
+    nyc: {
+      title: 'NYC Transit Rider Experience — Spring 2026 Insights',
+      pdfUrl: `${GITHUB_RAW_BASE}/NYC_Transit_Rider_Insights_-_Michel_Magdy.pdf`,
+      thumbId: 'nyc-thumb',
       slides: [], total: 0, loaded: false
     }
   };
@@ -878,12 +1296,14 @@
         'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
       cb();
     };
+    s.onerror = () => cb();
     document.head.appendChild(s);
   }
 
   function renderPDFSlides(project, onDone) {
     if (project.loaded) { onDone(); return; }
     loadPDFJS(() => {
+      if (!window.pdfjsLib) { markThumbError(project); onDone(); return; }
       pdfjsLib.getDocument(project.pdfUrl).promise.then(pdf => {
         project.total = pdf.numPages;
         const renders = [];
@@ -900,11 +1320,18 @@
           results.sort((a, b) => a.index - b.index);
           project.slides = results.map(r => r.dataUrl);
           project.loaded = true;
-          document.getElementById(project.thumbId).src = project.slides[0];
+          const img = document.getElementById(project.thumbId);
+          img.src = project.slides[0];
+          img.closest('.slide-thumb').classList.add('loaded');
           onDone();
-        });
-      });
+        }).catch(() => { markThumbError(project); onDone(); });
+      }).catch(() => { markThumbError(project); onDone(); });
     });
+  }
+
+  function markThumbError(project) {
+    const img = document.getElementById(project.thumbId);
+    if (img) img.closest('.slide-thumb').classList.add('error');
   }
 
   function openLightbox(key) {
@@ -918,7 +1345,10 @@
       document.getElementById('lb-img').src = '';
       document.getElementById('lb-counter').textContent = 'Loading slides…';
       document.getElementById('lb-dots').innerHTML = '';
-      renderPDFSlides(proj, () => { lbRender(); });
+      renderPDFSlides(proj, () => {
+        if (proj.loaded) { lbRender(); }
+        else { document.getElementById('lb-counter').textContent = 'Could not load slides. Try again shortly.'; }
+      });
     } else {
       lbRender();
     }
@@ -939,10 +1369,9 @@
     document.getElementById('lb-counter').textContent = `Slide ${i + 1} of ${proj.total}`;
     document.getElementById('lb-prev').disabled = i === 0;
     document.getElementById('lb-next').disabled = i === proj.total - 1;
-    // Dots
     const dots = document.getElementById('lb-dots');
     dots.innerHTML = proj.slides.map((_, di) =>
-      `<button class="lb-dot ${di === i ? 'active' : ''}" onclick="lbGoto(${di})"></button>`
+      `<button class="lb-dot ${di === i ? 'active' : ''}" aria-label="Go to slide ${di+1}" onclick="lbGoto(${di})"></button>`
     ).join('');
   }
 
@@ -951,10 +1380,8 @@
     lbCurrent.index = Math.max(0, Math.min(proj.total - 1, lbCurrent.index + dir));
     lbRender();
   }
-
   function lbGoto(i) { lbCurrent.index = i; lbRender(); }
 
-  // Keyboard navigation
   document.addEventListener('keydown', e => {
     if (!document.getElementById('lightbox').classList.contains('open')) return;
     if (e.key === 'ArrowRight') lbNav(1);
@@ -962,70 +1389,50 @@
     if (e.key === 'Escape') closeLightbox();
   });
 
-  // Auto-load thumbnail on page load
   window.addEventListener('load', () => {
     renderPDFSlides(projects.audi, () => {});
     renderPDFSlides(projects.gl3, () => {});
+    renderPDFSlides(projects.velmora, () => {});
+    renderPDFSlides(projects.nyc, () => {});
   });
 </script>
 
-<!-- CONTACT -->
-<section id="contact">
-  <div class="contact-inner reveal">
-    <div class="section-label">Contact</div>
-    <h2>Let's build something <em>meaningful</em>.</h2>
-    <p>Open to freelance projects, full-time roles, and consulting. Always happy to talk data.</p>
-    <a class="contact-email" href="mailto:michel.magdy60@gmail.com">michel.magdy60@gmail.com</a>
-    <div class="social-links">
-      <a class="social-link" href="https://www.linkedin.com/in/michel-magdy-00770b191" target="_blank" rel="noopener">⬡ LinkedIn</a>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <span>© 2026 Michel Magdy</span>
-  <span>Data & ETL Analyst · Social Media Intelligence</span>
-</footer>
-
 <script>
-  // ── SKILLS EDITOR ──
+  // ── SKILLS DATA + OWNER-ONLY EDITOR (append ?edit=1 to the URL) ──
   let skillsData = [
+    { title: "Social Listening & Analytics",  tags: ["Meta Insights","Twitter/X API","TikTok Analytics","Sprout Social","Brandwatch","GA4","Sentiment NLP"] },
     { title: "ETL & Data Engineering", tags: ["Python","Apache Airflow","dbt","SQL","Spark","Pandas","REST APIs","JSON/XML"] },
-    { title: "Social Media Analysis",  tags: ["Meta Insights","Twitter/X API","TikTok Analytics","Sprout Social","Brandwatch","GA4","Sentiment NLP"] },
     { title: "Visualization & Warehousing", tags: ["Tableau","Power BI","Looker","BigQuery","Snowflake","PostgreSQL","Redshift"] }
   ];
 
   function renderSkills() {
     const grid = document.getElementById('skills-grid');
-    grid.innerHTML = skillsData.map((g,gi) => `
+    grid.innerHTML = skillsData.map((g) => `
       <div class="skill-group">
         <div class="skill-group-title">${g.title}</div>
         <div class="skill-tags">${g.tags.map(t => `<span class="skill-tag">${t}</span>`).join('')}</div>
       </div>`).join('');
-    grid.className = 'skills-grid reveal visible';
+    grid.classList.add('visible');
   }
 
   function renderEditor() {
     const el = document.getElementById('edit-groups');
     el.innerHTML = skillsData.map((g, gi) => `
-      <div style="margin-bottom:1.5rem;padding:1.2rem;background:#111108;border:1px solid #2a2a22;">
-        <div style="display:flex;gap:0.6rem;align-items:center;margin-bottom:0.8rem;">
-          <input value="${g.title}" onchange="skillsData[${gi}].title=this.value;renderSkills()"
-            style="flex:1;background:transparent;border:none;border-bottom:1px solid #3a3a30;color:#B8B4A8;font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;padding:0.3rem 0;outline:none;" />
-          <button onclick="removeGroup(${gi})" style="background:none;border:none;color:#555548;cursor:pointer;font-size:0.75rem;padding:0.2rem 0.5rem;" title="Remove category">✕</button>
+      <div class="edit-group-row">
+        <div class="edit-group-title-row">
+          <input value="${g.title}" onchange="skillsData[${gi}].title=this.value;renderSkills()" aria-label="Category name" />
+          <button class="edit-remove-group-btn" onclick="removeGroup(${gi})" title="Remove category">✕</button>
         </div>
-        <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:0.6rem;">
+        <div class="edit-tag-list">
           ${g.tags.map((t,ti) => `
-            <span style="display:inline-flex;align-items:center;gap:0.3rem;font-family:'DM Mono',monospace;font-size:0.65rem;padding:0.25rem 0.55rem;border:1px solid #3a3a30;color:#B8B4A8;">
+            <span class="edit-tag-pill">
               ${t}
-              <button onclick="removeTag(${gi},${ti})" style="background:none;border:none;color:#555548;cursor:pointer;font-size:0.65rem;line-height:1;padding:0;">✕</button>
+              <button onclick="removeTag(${gi},${ti})" aria-label="Remove ${t}">✕</button>
             </span>`).join('')}
         </div>
-        <div style="display:flex;gap:0.5rem;">
-          <input id="new-tag-${gi}" placeholder="Add skill..." onkeydown="if(event.key==='Enter'){addTag(${gi})}"
-            style="flex:1;background:transparent;border:1px solid #3a3a30;color:#B8B4A8;font-family:'DM Mono',monospace;font-size:0.65rem;padding:0.35rem 0.6rem;outline:none;" />
-          <button onclick="addTag(${gi})" style="background:none;border:1px solid #5B3EE8;color:#9B8FFF;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;padding:0.35rem 0.8rem;cursor:pointer;">Add</button>
+        <div class="edit-add-tag-row">
+          <input id="new-tag-${gi}" placeholder="Add skill..." onkeydown="if(event.key==='Enter'){addTag(${gi})}" aria-label="New skill" />
+          <button onclick="addTag(${gi})">Add</button>
         </div>
       </div>`).join('');
   }
@@ -1037,10 +1444,7 @@
   }
   function removeTag(gi, ti) { skillsData[gi].tags.splice(ti,1); renderSkills(); renderEditor(); }
   function removeGroup(gi) { skillsData.splice(gi,1); renderSkills(); renderEditor(); }
-  function addGroup() {
-    skillsData.push({ title: "New Category", tags: [] });
-    renderSkills(); renderEditor();
-  }
+  function addGroup() { skillsData.push({ title: "New Category", tags: [] }); renderSkills(); renderEditor(); }
   function toggleEditor() {
     const p = document.getElementById('edit-panel');
     const open = p.style.display === 'block';
@@ -1055,12 +1459,17 @@
 
   renderSkills();
 
+  // Editor UI is hidden from visitors by default — add ?edit=1 to the URL to access it.
+  if (new URLSearchParams(location.search).has('edit')) {
+    document.getElementById('skills-edit-controls').style.display = 'block';
+  }
+
   // Scroll reveal
   const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
+  const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.12 });
-  reveals.forEach(r => observer.observe(r));
+  reveals.forEach(r => revealObserver.observe(r));
 </script>
 
 </body>
