@@ -427,7 +427,7 @@
     color: var(--ink-fg-mid);
   }
   .skills-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
     background: var(--ink-line);
   }
   .skill-group {
@@ -1375,9 +1375,8 @@
 <script>
   // ── SKILLS DATA + OWNER-ONLY EDITOR (append ?edit=1 to the URL) ──
   let skillsData = [
-    { title: "Social Listening & Analytics",  tags: ["Meta Insights","X","TikTok Analytics","Sprout Social","Brandwatch","GA4","Sentiment NLP"] },
-    { title: "ETL & Data Engineering", tags: ["Python","Apache Airflow","dbt","SQL","Spark","Pandas","NumPy","REST APIs","JSON/XML"] },
-    { title: "Analysis & Visualization", tags: ["Campaign Analysis","Brand Sentiment Tracking","Consumer Behavior Analysis","Pricing Analysis","Power BI","Looker","Snowflake","PostgreSQL"] }
+    { title: "Social Listening & Marketing Analysis",  tags: ["Meta Insights","X","TikTok Analytics","Sprout Social","Brandwatch","GA4","Sentiment NLP","Campaign Analysis","Brand Sentiment Tracking","Consumer Behavior Analysis","Pricing Analysis"] },
+    { title: "ETL, Data Engineering & Visualization", tags: ["Python","Apache Airflow","dbt","SQL","Spark","Pandas","NumPy","REST APIs","JSON/XML","Power BI","Looker","Snowflake","PostgreSQL"] }
   ];
 
   function renderSkills() {
