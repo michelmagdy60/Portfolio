@@ -273,6 +273,21 @@
 
   /* ── SECTIONS ── */
   .section { padding: 6rem 0; border-top: 1px solid var(--rule); }
+  /* Free tool band (SEO audit) */
+  .offer { padding: 4.5rem 0; border-top: 1px solid var(--rule); background: var(--accent-soft); scroll-margin-top: var(--nav-h); }
+  .offer-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 3.2rem; align-items: center; }
+  .offer h2 { font-size: clamp(1.9rem, 3.2vw, 2.5rem); max-width: 560px; }
+  .offer h2 em { color: var(--accent); }
+  .offer-text { color: var(--mid); max-width: 540px; margin-top: 1rem; }
+  .offer-side { background: var(--card-bg); border: 1px solid var(--rule); padding: 1.8rem; }
+  .offer-facts { margin: 0 0 1.5rem; }
+  .offer-facts div { display: grid; grid-template-columns: 6.5rem 1fr; gap: 1rem; padding: 0.7rem 0; border-bottom: 1px solid var(--rule); font-size: 0.95rem; }
+  .offer-facts div:first-child { border-top: 1px solid var(--rule); }
+  .offer-facts dt { color: var(--mid); padding-top: 0.2rem; }
+  .offer-facts dd { margin: 0; }
+  .offer-btn { width: 100%; justify-content: center; }
+  @media (max-width: 980px) { .offer-grid { grid-template-columns: 1fr; gap: 2rem; } }
+  @media (max-width: 768px) { .offer { padding: 3.5rem 0; } .offer-side { padding: 1.3rem; } .offer-facts div { grid-template-columns: 1fr; gap: 0.2rem; } }
   .section-head {
     display: grid; grid-template-columns: 1fr 1fr; gap: 2rem 4rem; align-items: end;
     margin-bottom: 3.2rem;
@@ -679,6 +694,7 @@
       <li><a href="#work">Work</a></li>
       <li><a href="#process">Process</a></li>
       <li><a href="#about">About</a></li>
+      <li><a href="#free-audit">Free SEO audit</a></li>
       <li><a href="#contact" class="nav-cta">Let's talk</a></li>
     </ul>
   </nav>
@@ -778,6 +794,25 @@
         <p>Tired of rebuilding the same report every month? I set up the pipeline — collection, cleaning, and a Power BI dashboard — so reporting refreshes itself.</p>
         <div class="service-output"><span class="label">Typical output</span>A live dashboard your team can trust, plus the automated pipeline behind it.</div>
       </article>
+    </div>
+  </div>
+</section>
+
+<!-- FREE TOOL: SEO AUDIT -->
+<section id="free-audit" class="offer">
+  <div class="container offer-grid reveal">
+    <div>
+      <div class="section-label label">Free tool</div>
+      <h2>See how your website ranks against <em>your competitors.</em></h2>
+      <p class="offer-text">Enter your site and up to three competitors. I check what Google and your customers see: technical health, page titles, content, calls to action and how each site pitches itself. You get a scored report with what to fix first.</p>
+    </div>
+    <div class="offer-side">
+      <dl class="offer-facts">
+        <div><dt class="label">You get</dt><dd>A PDF report: a score out of 100, fixes ranked by impact, and suggested page titles.</dd></div>
+        <div><dt class="label">Time</dt><dd>About 20 minutes, by email.</dd></div>
+        <div><dt class="label">Cost</dt><dd>Free. English and Arabic sites.</dd></div>
+      </dl>
+      <a class="btn btn-primary offer-btn" href="https://seo-audit-michelmagdy.vercel.app/" target="_blank" rel="noopener">Get a free audit ↗</a>
     </div>
   </div>
 </section>
@@ -925,38 +960,6 @@
         </div>
       </article>
 
-      <!-- SEO & competitor audit tool -->
-      <article class="project-card reveal">
-        <div class="tool-preview" aria-hidden="true">
-          <div class="tp-bar"><i></i><i></i><i></i></div>
-          <div class="tp-code">
-            <span class="tp-line"><span class="tp-dim"># audit example.com vs 3 competitors</span></span>
-            <span class="tp-line"><span class="tp-accent">crawl</span> 50 pages · first screen checked in a browser</span>
-            <span class="tp-line"><span class="tp-accent">score</span> 86/100 · grade B · rank #1 of 4</span>
-            <span class="tp-line"><span class="tp-accent">plan</span> 12 quick wins, ranked by impact</span>
-            <span class="tp-line"><span class="tp-dim">→ report.pdf sent to your inbox</span> <span class="tp-cursor"></span></span>
-          </div>
-        </div>
-        <div class="project-meta">
-          <span class="project-type label"><span class="dot"></span>SEO &amp; competitor analysis</span>
-          <span class="mode-badge build">End-to-end build</span>
-        </div>
-        <h3 class="project-title">SEO &amp; Competitor Audit Tool</h3>
-        <p class="project-desc">Enter a website and get a scored SEO and marketing audit, compared with up to three competitors, as a PDF report in your inbox.</p>
-        <dl class="project-facts">
-          <div><dt>Built</dt><dd>A Python pipeline that crawls a site, checks technical SEO, content and messaging, benchmarks competitors and ranks every fix by impact.</dd></div>
-          <div><dt>Try it</dt><dd>Request a free audit of your own site. The report arrives by email in about 20 minutes.</dd></div>
-        </dl>
-        <div class="project-tools">
-          <span class="tool-chip">Python</span>
-          <span class="tool-chip">Playwright</span>
-          <span class="tool-chip">GitHub Actions</span>
-          <span class="tool-chip">Power BI</span>
-        </div>
-        <div class="project-actions">
-          <a class="project-btn primary" href="https://seo-audit-michelmagdy.vercel.app/" target="_blank" rel="noopener">Get a free audit ↗</a>
-        </div>
-      </article>
 
     </div>
   </div>
@@ -1260,7 +1263,7 @@
     });
   }
   const sectionObserver = new IntersectionObserver(handleSectionIntersect, { rootMargin: '-45% 0px -50% 0px' });
-  ['hero', 'services', 'work', 'process', 'about', 'skills', 'contact'].forEach(function observe(id) {
+  ['hero', 'services', 'free-audit', 'work', 'process', 'about', 'skills', 'contact'].forEach(function observe(id) {
     const el = document.getElementById(id);
     if (el) sectionObserver.observe(el);
   });
